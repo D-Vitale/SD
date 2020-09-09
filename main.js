@@ -8,46 +8,55 @@ const menuItems = {
         name : "home",
         link : "/",
         teams : undefined,
+        logo : undefined,
     },
     "SA" : {
         name : "Serie A",
         link : "/SA",
         teams : 20,
+        logo : "/images/seriea.png",
     },
     "PL" : {
         name : "Premier League",
         link : "/PL",
         teams : 20,
+        logo : "/images/premier.png",
     },
     "BL1" : {
         name : "Bundesliga 1",
         link : "/BL1",
         teams : 18,
+        logo : "/images/bundesliga.png",
     },
     "PPL" : {
         name : "Primeira Liga",
         link : "/PPL",
         teams : 18,
+        logo : "/images/primeiraliga.png",
     },
     "DED" : {
         name : "Eredivisie",
         link : "/DED",
         teams : 18,
+        logo : "/images/eredivisie.png",
     },
     "FL1" : {
         name : "Ligue 1",
         link : "/FL1",
         teams : 20,
+        logo : "/images/ligue1.png",
     },
     "PD" : {
         name : "La Liga",
         link : "/PD",
         teams : 20,
+        logo : "/images/laliga.png",
     },
     "ELC" : {
         name : "Championship",
         link : "/ELC",
         teams : 24,
+        logo : "/images/championship.png",
     }
 }
 
@@ -77,7 +86,7 @@ async function callTablesApi(teams, points, gameplayed, won, draw, lost, goalsfo
     return teams, points, gameplayed, won, draw, lost, goalsfor, goalsagainst, goalsdiff
 }
 
-async function getTable(res, code, competition){
+async function getTable(res, code, competition, logo){
     let teams = []
     let points = []
     let gameplayed = []
@@ -99,7 +108,8 @@ async function getTable(res, code, competition){
         goalsagainst : goalsagainst,
         goalsdiff : goalsdiff,
         code : code,
-        competition : competition
+        competition : competition,
+        logo : logo
     })
 }
 
@@ -152,7 +162,22 @@ async function callMatchesApi(code, matchday, hometeams, awayteams, scores){
         });
         return hometeams, awayteams, scores
     })
-    console.log(hometeams, awayteams, scores)
+    return hometeams, awayteams, scores
+}
+
+async function getMatchdayTable(res, code, competition, matchday){
+    let hometeams = []
+    let awayteams = []
+    let scores = []
+    await(callMatchesApi(code, matchday, hometeams, awayteams, scores))
+    res.render("matchday.ejs",{
+        hometeams : hometeams,
+        awayteams : awayteams,
+        scores : scores,
+        competition : competition,
+        code : code,
+        matchday : matchday
+    })
 }
 
 app.set("view engine", "ejs")
@@ -164,24 +189,25 @@ app.get("/", function(req, res){
 })
 
 app.get("/:code", function(req, res){
-    getTable(res, req.params.code, menuItems[req.params.code].name)
+    getTable(res, req.params.code, menuItems[req.params.code].name, menuItems[req.params.code].logo)
 })
 
 app.get("/:code/stats", function(req, res){
     getGoalsTable(res, req.params.code, menuItems[req.params.code].name)
 })
+
 app.get("/:code/matches", function(req, res){
-    res.render("matchday.ejs", {
+    res.render("matches.ejs", {
         code : req.params.code, 
         teams : menuItems[req.params.code].teams,
         competition : menuItems[req.params.code].name
     })
 })
 
+app.get("/:code/matches/:matchday", function(req, res){
+    getMatchdayTable(res, req.params.code, menuItems[req.params.code].name, req.params.matchday)
+})
+
 app.listen(8080, function(req, res){
     console.log("server avviato sulla porta 8080")
-    const hometeams = []
-    const awayteams = []
-    const scores = []
-    callMatchesApi("PL", 1, hometeams, awayteams, scores)
 })
