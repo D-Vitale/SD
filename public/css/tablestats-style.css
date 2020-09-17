@@ -1,0 +1,18 @@
+body {
+    background-image: url('/images/background.jpg'); 
+    background-repeat: no-repeat; 
+    background-size: cover;
+    color: white;
+}
+
+.btn {
+    margin: 5px 10px 10px 10px;
+}
+
+.table {
+    width: 75%; 
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(2px);
+    color: white;
+}

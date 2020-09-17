@@ -7,25 +7,26 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/matchday-style.css">
 
         <title>Socccer data - <%=competition%></title>
     </head>
     <body>
-        <h1 class="text-center"><%=competition%></h1>
-        <h5 class="text-center">Giornata <%=matchday%></h5>
+        <h1 class="text-center"><%=competition%> <img src="<%=logo%>" width="auto" height="40" class="d-inline-block align-middle" alt="" loading="lazy"></h1>
         <div class="container pagination justify-content-center" style="margin: auto;">
-            <a class="btn btn-primary" href="/" role="button" style="margin: 5px 10px 10px 10px;">
+            <a class="btn btn-primary" href="/" role="button">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.5 10.995V14.5a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V11c0-.25-.25-.5-.5-.5H7c-.25 0-.5.25-.5.495z"/>
                 <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
             </svg>
             </a>
-            <a class="btn btn-primary" href="/<%=code%>" role="button" style="margin: 5px 10px 10px 10px;">Classifica</a>
-            <a class="btn btn-primary" href="/<%=code%>/stats" role="button" style="margin: 5px 10px 10px 10px;">Marcatori</a>
-            <a class="btn btn-primary" href="/<%=code%>/matches" role="button" style="margin: 5px 10px 10px 10px;">Calendario</a>
+            <a class="btn btn-primary" href="/<%=code%>" role="button">Classifica</a>
+            <a class="btn btn-primary" href="/<%=code%>/stats" role="button">Marcatori</a>
+            <a class="btn btn-primary" href="/<%=code%>/matches" role="button">Calendario</a>
         </div>
-        <table class="table text-center" style="width: 50%; margin: auto;">
+        <table class="table text-center">
             <thead class="thead-dark">
+              <tr><th colspan="3"><h5 class="text-center">Giornata <%=matchday%></h5></th></tr>  
               <tr>
                 <th scope="col" style="width: 16.6%;">Hometeam</th>
                 <th scope="col" style="width: 16.6%;">Score</th>

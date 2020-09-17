@@ -57,7 +57,7 @@ const menuItems = {
         link : "/ELC",
         teams : 24,
         logo : "/images/championship.png",
-    }
+    },
 }
 
 async function callTablesApi(teams, points, gameplayed, won, draw, lost, goalsfor, goalsagainst, goalsdiff, code){
@@ -114,7 +114,7 @@ async function getTable(res, code, competition, logo){
 }
 
 async function callGoalsApi(code, playersnames, playersteams, playersgoals){
-    await fetch(`https://api.football-data.org/v2/competitions/${code}/scorers?limit=20&season=2019`, {
+    await fetch(`https://api.football-data.org/v2/competitions/${code}/scorers?limit=15&season=2019`, {
         headers: {
             "X-Auth-Token" : "058411f022f3449bbe8fcfba93667523"
         }
@@ -132,7 +132,7 @@ async function callGoalsApi(code, playersnames, playersteams, playersgoals){
     return playersnames, playersteams, playersgoals
 }
 
-async function getGoalsTable(res, code, competition){
+async function getGoalsTable(res, code, competition, logo){
     let playersnames = []
     let playersteams = []
     let playersgoals = []
@@ -142,7 +142,8 @@ async function getGoalsTable(res, code, competition){
         playersteams : playersteams,
         playersgoals : playersgoals,
         competition : competition,
-        code : code
+        code : code,
+        logo : logo
     })
 }
 
@@ -165,7 +166,7 @@ async function callMatchesApi(code, matchday, hometeams, awayteams, scores){
     return hometeams, awayteams, scores
 }
 
-async function getMatchdayTable(res, code, competition, matchday){
+async function getMatchdayTable(res, code, competition, matchday, logo){
     let hometeams = []
     let awayteams = []
     let scores = []
@@ -176,7 +177,8 @@ async function getMatchdayTable(res, code, competition, matchday){
         scores : scores,
         competition : competition,
         code : code,
-        matchday : matchday
+        matchday : matchday,
+        logo : logo
     })
 }
 
@@ -193,19 +195,20 @@ app.get("/:code", function(req, res){
 })
 
 app.get("/:code/stats", function(req, res){
-    getGoalsTable(res, req.params.code, menuItems[req.params.code].name)
+    getGoalsTable(res, req.params.code, menuItems[req.params.code].name, menuItems[req.params.code].logo)
 })
 
 app.get("/:code/matches", function(req, res){
     res.render("matches.ejs", {
         code : req.params.code, 
         teams : menuItems[req.params.code].teams,
-        competition : menuItems[req.params.code].name
+        competition : menuItems[req.params.code].name,
+        logo : menuItems[req.params.code].logo
     })
 })
 
 app.get("/:code/matches/:matchday", function(req, res){
-    getMatchdayTable(res, req.params.code, menuItems[req.params.code].name, req.params.matchday)
+    getMatchdayTable(res, req.params.code, menuItems[req.params.code].name, req.params.matchday, menuItems[req.params.code].logo)
 })
 
 app.listen(8080, function(req, res){
